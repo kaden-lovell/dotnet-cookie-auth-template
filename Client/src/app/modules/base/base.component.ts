@@ -9,12 +9,15 @@ import { FormControl, NgForm, NgModelGroup } from "@angular/forms";
   </div> `
 })
 export class BaseComponent implements OnInit {
+  view = 1;
+  model: any;
+  response: any;
 
   constructor() { }
 
   ngOnInit(): void { }
 
-  // this logic handles all of our site validation.
+  // form-validation logic
   isValid(container: NgForm | NgModelGroup): boolean {
     const form = container as NgForm;
     const group = container as NgModelGroup;

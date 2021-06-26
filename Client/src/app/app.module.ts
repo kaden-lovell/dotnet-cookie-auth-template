@@ -9,11 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/login/login.component';
 import { BaseComponent } from './modules/base/base.component';
+import { HttpService } from './services/http/http.service';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, BaseComponent],
   imports: [BrowserModule, FormsModule, FormsModule, HttpClientModule, AppRoutingModule],
-  providers: [],
+  providers: [HttpService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
