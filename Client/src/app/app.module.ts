@@ -1,23 +1,19 @@
-import { NgModule } from '@angular/core';
+// modules (keep alpahabetical)
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
-
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from "@angular/common/http";
+import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
+
+// components (keep alphabetical)
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './modules/components/sidebar/sidebar.component';
-import { NavbarComponent } from './modules/components/navbar/navbar.component';
 import { LoginComponent } from './modules/login/login.component';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { BaseComponent } from './modules/base/base.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CommonModule],
-  providers: [
-    NavbarComponent,
-    LoginComponent,
-    DashboardComponent,
-    SidebarComponent,
-  ],
+  declarations: [AppComponent, LoginComponent, BaseComponent],
+  imports: [BrowserModule, FormsModule, FormsModule, HttpClientModule, AppRoutingModule],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
