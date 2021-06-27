@@ -15,6 +15,7 @@ namespace Server.Services {
             _httpContextAccessor = httpContextAccessor;
             _repository = repository;
         }
+
         public async Task<dynamic> LoginAsync(dynamic model) {
             var user = await _repository.GetUserByEmailAsync((string)model.email);
 

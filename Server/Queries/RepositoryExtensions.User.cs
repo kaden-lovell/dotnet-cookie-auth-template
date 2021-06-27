@@ -35,5 +35,15 @@ namespace Server.Persistence {
 
             return result;
         }
+
+        public static async Task<bool> UsersExist(this IRepository<User> repository) {
+            var result =
+                await repository
+                    .AsQueryable()
+                    .OfType<User>()
+                    .AnyAsync();
+
+            return result;
+        }
     }
 }
