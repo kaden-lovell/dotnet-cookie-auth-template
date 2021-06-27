@@ -1,13 +1,15 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using source.Services;
-
+using Server.Services;
 namespace source.Controllers {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Policy = "StudentRole")]
+    [Authorize(Policy = "TeacherRole")]
     public class SpeechAceController : ControllerBase {
         private readonly ILogger<SpeechAceController> _logger;
         private readonly SpeechAceService _speechAceService;
