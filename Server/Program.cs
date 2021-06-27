@@ -26,7 +26,7 @@ namespace source {
                     var context = services.GetRequiredService<DataContext>();
                     // add more seeders here
                     UserSeeder.Initialize(context, services);
-                } catch (Exception ex) {
+                } catch {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError("An error occurred while seeding the database");
                 }
