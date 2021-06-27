@@ -1,0 +1,9 @@
+This is serving as a reminder for where I am on my project:
+    I just added a repository layer, and users.  
+    I am working on cookie authentication.
+    I need role authentication.
+
+    After I get the roles setup, I will test by creating two dashboards in the client, and making sure I can identify which one by role.
+    I will also make two controller endpoints that will be locked to a single role, and make sure that authorization is working properly.
+
+From there, I will work on building out the specific workflows for each role.
