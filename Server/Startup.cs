@@ -11,7 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-
+using System;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace source {
     public class Startup {
@@ -32,38 +34,55 @@ namespace source {
                 .PersistKeysToFileSystem(new DirectoryInfo(keysDirectoryPath))
                 .SetApplicationName("CustomCookieAuthentication");
 
-            services.AddCors();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
+                options.Cookie.HttpOnly = false;
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.Name = "auth_cookie";
+                options.ExpireTimeSpan = TimeSpan.FromHours(6);
+                options.Events = new CookieAuthenticationEvents {
+                    OnRedirectToLogin = redirectContext => {
+                        redirectContext.HttpContext.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
             services.AddAuthorization(options => {
                 options.AddPolicy("TeacherRole", policy => policy.RequireRole("Teacher"));
                 options.AddPolicy("StudentRole", policy => policy.RequireRole("Student"));
             });
 
+            services.AddScoped<IPersistenceContext, DataContext>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers();
+            services.AddCors();
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore); ;
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "source", Version = "v1" }); });
 
+            // Add HTTP Context to keep track of login status on the client.
+            services.AddHttpContextAccessor();
+
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevelopSqlServer")));
+
             services.AddScoped<SpeechAceService>();
+            services.AddScoped<LoginService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "source v1"));
             }
 
+            var cookiePolicyOptions = new CookiePolicyOptions {
+                MinimumSameSitePolicy = SameSiteMode.None,
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
+            app.UseCors(options => options.WithOrigins("http://localhost:4200", "https://localhost:4200", "localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             app.UseHttpsRedirection();
-            app.UseRouting();
             app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
-
-            // NO don't use Strict!
-            // Had issues with iPhone Chrome not working
-            //app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
-            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });

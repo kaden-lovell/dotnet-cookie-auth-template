@@ -35,7 +35,7 @@ namespace Server.Services {
                 new Claim("https://localhost:4200/claims/lastname", user.LastName),
                 new Claim("https://localhost:4200/claims/email", user.Email),
                 new Claim("https://localhost:4200/claims/id", user.Id.ToString()),
-                new Claim("https://localhost:4200/claims/role", user.Role.ToString()),
+                new Claim("https://localhost:4200/claims/role", user.Role),
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, "Cookies");

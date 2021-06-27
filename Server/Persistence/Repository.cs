@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Server.Persistence {
-    public class Repository<TModel> : IRepository<TModel> where TModel : Model {
+    public class Repository<TModel> : IRepository<TModel> where TModel : class, Model {
         private readonly IPersistenceContext _persistenceContext;
         private readonly DataContext _dataContext;
         private DbSet<TModel> entities;
