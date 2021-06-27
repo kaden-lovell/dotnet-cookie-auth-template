@@ -7,4 +7,3 @@ This is serving as a reminder for where I am on my project:
     I will also make two controller endpoints that will be locked to a single role, and make sure that authorization is working properly.
 
 From there, I will work on building out the specific workflows for each role.
-My current issue is I need to add newtonsoft to my project to parse out dynamics from the controller.

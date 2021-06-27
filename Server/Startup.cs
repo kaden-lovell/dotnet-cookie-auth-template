@@ -32,7 +32,7 @@ namespace source {
 
             services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(keysDirectoryPath))
-                .SetApplicationName("CustomCookieAuthentication");
+                .SetApplicationName("auth_cookie");
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
                 options.Cookie.HttpOnly = false;
@@ -77,6 +77,7 @@ namespace source {
             var cookiePolicyOptions = new CookiePolicyOptions {
                 MinimumSameSitePolicy = SameSiteMode.None,
             };
+
             app.UseCookiePolicy(cookiePolicyOptions);
             app.UseCors(options => options.WithOrigins("http://localhost:4200", "https://localhost:4200", "localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             app.UseHttpsRedirection();
