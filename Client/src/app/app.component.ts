@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { UserService } from './services/user/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,7 +8,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Client';
 
-  constructor() {}
+  constructor(private readonly _userService: UserService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._userService.loadUser().then((response) => {
+      this._userService.user = response;
+    });
+  }
 }

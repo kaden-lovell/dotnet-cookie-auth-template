@@ -1,31 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, NgForm, NgModelGroup } from "@angular/forms";
-
+import { FormControl, NgForm, NgModelGroup } from '@angular/forms';
+import { User } from 'src/app/services/user/user';
+import { UserService } from 'src/app/services/user/user.service';
 @Component({
   selector: 'app-base',
-  template: `
-  <div>
-      ComponentA
-  </div> `
+  template: ` <div>ComponentA</div> `,
 })
-export class BaseComponent implements OnInit {
+export class BaseComponent {
   view = 1;
-  model: any;
+  model = {};
   response: any;
-
-  constructor() { }
-
-  ngOnInit(): void { }
+  user = new User();
+  constructor(public _userService: UserService) {
+    this._userService.loadUser().then((response) => {
+      this.user = response;
+    });
+  }
 
   // form-validation logic
   isValid(container: NgForm | NgModelGroup): boolean {
     const form = container as NgForm;
     const group = container as NgModelGroup;
 
-    const formGroup =
-      form.form
-        ? form.form
-        : group.control;
+    const formGroup = form.form ? form.form : group.control;
 
     let count = 0;
 
@@ -60,7 +57,7 @@ export class BaseComponent implements OnInit {
         continue;
       }
 
-      if (k !== "remote") {
+      if (k !== 'remote') {
         count++;
       }
     }

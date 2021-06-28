@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Server.Models;
 using Server.Persistence;
 
@@ -11,12 +12,15 @@ namespace Server.Services {
     public class LoginService {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepository<User> _repository;
-        public LoginService(IHttpContextAccessor httpContextAccessor, IRepository<User> repository) {
+        private readonly ILogger<LoginService> _logger;
+        public LoginService(IHttpContextAccessor httpContextAccessor, ILogger<LoginService> logger, IRepository<User> repository) {
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
             _repository = repository;
         }
 
         public async Task<dynamic> LoginAsync(dynamic model) {
+            _logger.LogInformation($"LoginService:LoginAsync:{model.email}{model.password}");
             var user = await _repository.GetUserByEmailAsync((string)model.email);
 
             if (user == null) {

@@ -10,9 +10,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/login/login.component';
 import { BaseComponent } from './modules/base/base.component';
 import { HttpService } from './services/http/http.service';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, BaseComponent],
+  declarations: [AppComponent, LoginComponent, BaseComponent, DashboardComponent],
   imports: [BrowserModule, FormsModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [HttpService],
   bootstrap: [AppComponent],

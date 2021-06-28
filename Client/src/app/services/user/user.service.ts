@@ -3,32 +3,40 @@ import { Router } from '@angular/router';
 import { User } from './user';
 
 // shared
-import { HttpService } from "../http/http.service";
+import { HttpService } from '../http/http.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class UserService {
-    user: User;
+  user: User;
 
-    constructor(private readonly _httpService: HttpService, private readonly _router: Router) { }
-    loadUser() {
-        const url = `/api/user/activeuser`;
-        this._httpService.get(url).then(activeUser => {
-            try {
-                const user: User = {
-                    id: activeUser.id,
-                    username: activeUser.username,
-                    role: activeUser.role
-                }
+  constructor(
+    private readonly _httpService: HttpService,
+    private readonly _router: Router
+  ) {}
 
-                this.user = user;
-            }
-            catch (e) {
-                this.user = undefined;
-                this._router.navigateByUrl("https://localhost:4200/login");
-            }
-        });
-    }
+  async loadUser() {
+    const url = `/api/user/activeuser`;
+    return await this._httpService.get(url);
+  }
+
+  async login(model: any): Promise<any> {
+    const url = `/api/login/login`;
+    await this._httpService.post(url, model).then((response) => {
+      console.log(response);
+      this.user = response;
+      this._router.navigateByUrl('dashboard');
+    });
+  }
+
+  async logout(model: any): Promise<any> {
+    const url = `/api/login/logout`;
+    return await this._httpService.post(url, model);
+  }
+
+  async create(model: any): Promise<any> {
+    const url = `/api/user/create`;
+    return await this._httpService.post(url, model);
+  }
 }
