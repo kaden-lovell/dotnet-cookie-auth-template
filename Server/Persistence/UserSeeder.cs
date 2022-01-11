@@ -20,19 +20,19 @@ public class UserSeeder {
 
         var users = new List<User>();
         users.Add(new User {
-            Email = "alicenewport@kadenlovell.com",
-            FirstName = "Alice",
-            LastName = "Newport",
-            Password = "7eleven!!->",
+            Email = "TheTeacher@kadenlovell.com",
+            FirstName = "Tea",
+            LastName = "Cher",
+            Password = "teacher",
             Role = "Teacher",
             CreatedDate = DateTime.UtcNow,
         });
 
         users.Add(new User {
-            Email = "billythekid@kadenlovell.com",
-            FirstName = "Billy",
-            LastName = "Kid",
-            Password = "7eleven!!->",
+            Email = "TheStudent@kadenlovell.com",
+            FirstName = "Stu",
+            LastName = "Dent",
+            Password = "Student",
             Role = "Student",
             CreatedDate = DateTime.UtcNow,
         });
