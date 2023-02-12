@@ -37,7 +37,7 @@ namespace ClientPortalApi.Services {
 
             // password compare
             var server = await _serverRepository.GetServerAsync();
-            var decrypted = CryptoService.DecryptCypher(user.Password, server.Key, server.IV); ;
+            var decrypted = CryptoUtility.DecryptCypher(user.Password, server.Key, server.IV);
 
             // invalid password message
             if (decrypted != (string) model.password) {

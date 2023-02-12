@@ -56,7 +56,7 @@ namespace ClientPortalApi.Persistence {
                 Email = "kadenlovell@live.com",
                 FirstName = "kaden",
                 LastName = "lovell",
-                Password = CryptoService.EncryptString(Role.ADMINISTRATOR, server.Key, server.IV),
+                Password = CryptoUtility.EncryptString(Role.ADMINISTRATOR, server.Key, server.IV),
                 Role = Role.ADMINISTRATOR,
                 CreatedDate = DateTime.UtcNow
             });
@@ -65,7 +65,7 @@ namespace ClientPortalApi.Persistence {
                 Email = "onebadmuthajama@gmail.com",
                 FirstName = "kaden",
                 LastName = "lovell",
-                Password = CryptoService.EncryptString(Role.CLIENT, server.Key, server.IV),
+                Password = CryptoUtility.EncryptString(Role.CLIENT, server.Key, server.IV),
                 Role = Role.CLIENT,
                 CreatedDate = DateTime.UtcNow
             });

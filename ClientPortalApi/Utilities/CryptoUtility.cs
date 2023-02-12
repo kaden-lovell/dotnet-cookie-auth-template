@@ -4,11 +4,12 @@ using System.Security.Cryptography;
 
 namespace ClientPortalApi.Services
 {
-    public class CryptoService
-    {
-        public CryptoService() { }
+    // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-7.0
+    // this is the microsoft implementation recommendation, and its the source for this implementatation.
+    public class CryptoUtility {
+        public CryptoUtility() { }
         public static string DecryptCypher(byte[] cypher, byte[] key, byte[] iv) {
-            string decrypted = null;
+            string plaintext = null;
 
             // Create an Aes object
             // with the specified key and IV.
@@ -20,15 +21,16 @@ namespace ClientPortalApi.Services
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
                 // Create the streams used for decryption.
-                using (MemoryStream memoryStream = new MemoryStream(cypher))
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
-                using (StreamReader streamReader = new StreamReader(cryptoStream)) {
-                    decrypted = streamReader.ReadToEnd();
+                using (MemoryStream msDecrypt = new MemoryStream(cypher)) {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read)) {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt)) {
+                            plaintext = srDecrypt.ReadToEnd();
+                        }
+                    }
                 }
-
-                // Return the decrypted string from the stream reader.
-                return decrypted;
             }
+
+            return plaintext;
         }
 
         public static byte[] EncryptString(string input, byte[] key, byte[] iv) {
@@ -46,17 +48,17 @@ namespace ClientPortalApi.Services
                 // Create the streams used for encryption.
                 using (MemoryStream msEncrypt = new MemoryStream()) {
                     using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write)) {
-                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt)) {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt)){
                             //Write all data to the stream.
                             swEncrypt.Write(input);
                         }
                         encrypted = msEncrypt.ToArray();
                     }
                 }
-            }
 
-            // Return the encrypted bytes from the memory stream.
-            return encrypted;
+                // Return the encrypted bytes from the memory stream.
+                return encrypted;
+            }
         }
     }
 }
